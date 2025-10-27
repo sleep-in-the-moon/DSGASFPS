@@ -11,6 +11,7 @@
 
 class UInputAction;
 class UDGSGameplayAbility;
+class AWeaponBase;
 /**
  * 
  */
@@ -30,11 +31,26 @@ public:
 	virtual void OnRep_PlayerState() override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+protected:
+	UFUNCTION(Server, Reliable, BlueprintCallable)
+	void SwitchWeapon(AWeaponBase* NewWeapon);
+	UFUNCTION(Server, Reliable, BlueprintCallable)
+	void SpawnNewWeaponAndEquip(TSubclassOf<AWeaponBase> WeaponClass);
+
 public:
 	UPROPERTY(EditDefaultsOnly, Category = "GAS")
 	TMap<EDGSAbilityInputID, UInputAction*> InputEnumActionMap;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GAS")
 	TArray<TSubclassOf<UDGSGameplayAbility> > AbilitiesArray;
+
+protected:
+	UPROPERTY(ReplicatedUsing = OnRep_EquippedWeapon)
+	AWeaponBase* EquippedWeapon=nullptr;
+
+	UFUNCTION()
+	void OnRep_EquippedWeapon();
 
 private:
 	bool bIsBindAbilityInput=false;

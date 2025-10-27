@@ -7,6 +7,8 @@
 #include "Character/DGSPlayerState.h"
 #include "Data/DGSType.h"
 #include "AbilitySystem/DGSGameplayAbility.h"
+#include "Weapon/WeaponBase.h"
+#include "Net/UnrealNetwork.h"
 
 
 ADGSBasicCharacter::ADGSBasicCharacter()
@@ -94,5 +96,47 @@ void ADGSBasicCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 		FTopLevelAssetPath AbilityEnumAssetPath = FTopLevelAssetPath(FName("/Script/DSGASFPS"), FName("EDGSAbilityInputID"));
 		GetAbilitySystemComponent()->BindAbilityActivationToInputComponent(PlayerInputComponent, FGameplayAbilityInputBinds(FString("Confirm"), FString("Cancel"), AbilityEnumAssetPath, static_cast<int32>(EDGSAbilityInputID::Confirm), static_cast<int32>(EDGSAbilityInputID::Cancel)));
 		bIsBindAbilityInput = true;
+	}
+}
+
+void ADGSBasicCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ADGSBasicCharacter, EquippedWeapon);
+}
+
+void ADGSBasicCharacter::SwitchWeapon_Implementation(AWeaponBase* NewWeapon)
+{
+	if (/*NewWeapon &&*/ EquippedWeapon != NewWeapon)
+		EquippedWeapon = NewWeapon;
+}
+
+void ADGSBasicCharacter::SpawnNewWeaponAndEquip_Implementation(TSubclassOf<AWeaponBase> WeaponClass)
+{
+	if (WeaponClass)
+	{
+		SwitchWeapon(GetWorld()->SpawnActor<AWeaponBase>(WeaponClass, FTransform::Identity));
+	}
+}
+
+void ADGSBasicCharacter::OnRep_EquippedWeapon()
+{
+	if (EquippedWeapon)
+	{
+		if (EquippedWeapon->LinkAnimClass && GetMesh())
+		{
+			GetMesh()->LinkAnimClassLayers(EquippedWeapon->LinkAnimClass);
+		}
+		if (EquippedWeapon->SwitchWeaponMontage)
+		{
+			PlayAnimMontage(EquippedWeapon->SwitchWeaponMontage);
+		}
+
+		EquippedWeapon->AttachToActor(this, 
+			FAttachmentTransformRules(EAttachmentRule::KeepWorld, EAttachmentRule::KeepRelative, EAttachmentRule::KeepRelative, false)
+			, EquippedWeapon->AttachSocketName);
+
+		EquippedWeapon->SetActorRelativeTransform(EquippedWeapon->RelativeTransAttach);
 	}
 }
