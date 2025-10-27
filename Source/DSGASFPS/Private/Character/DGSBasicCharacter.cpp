@@ -116,6 +116,9 @@ void ADGSBasicCharacter::SpawnNewWeaponAndEquip_Implementation(TSubclassOf<AWeap
 {
 	if (WeaponClass)
 	{
+		if (EquippedWeapon)
+			EquippedWeapon->Destroy();
+
 		SwitchWeapon(GetWorld()->SpawnActor<AWeaponBase>(WeaponClass, FTransform::Identity));
 	}
 }
@@ -133,8 +136,8 @@ void ADGSBasicCharacter::OnRep_EquippedWeapon()
 			PlayAnimMontage(EquippedWeapon->SwitchWeaponMontage);
 		}
 
-		EquippedWeapon->AttachToActor(this, 
-			FAttachmentTransformRules(EAttachmentRule::KeepWorld, EAttachmentRule::KeepRelative, EAttachmentRule::KeepRelative, false)
+		EquippedWeapon->AttachToComponent(GetMesh(),
+			FAttachmentTransformRules(EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, EAttachmentRule::KeepRelative, false)
 			, EquippedWeapon->AttachSocketName);
 
 		EquippedWeapon->SetActorRelativeTransform(EquippedWeapon->RelativeTransAttach);

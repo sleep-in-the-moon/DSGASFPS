@@ -43,9 +43,9 @@ public:
 	USkeletalMeshComponent* SkeleMesh;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Attach")
-	FTransform RelativeTransAttach=FTransform(FRotator(0.0, -90.0, 0.0), FVector(-45, 0.0, -25.0), FVector(1.0, 1.0, 1.0));
+	FTransform RelativeTransAttach=FTransform::Identity;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Attach")
-	FName AttachSocketName = TEXT("weapon_r_muzzle");
+	FName AttachSocketName = TEXT("weapon_rSocket");
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Animation")
 	TSubclassOf<UAnimInstance> LinkAnimClass;
