@@ -25,7 +25,12 @@ void UGAShootBase::StartShoot()
 
 	FTransform StartTrans(Rot, StartLoc);
 	TArray<FHitResult> HitResults;
-	GetWorld()->LineTraceMultiByChannel(HitResults, StartLoc, StartLoc+ StartTrans.GetUnitAxis(EAxis::X)*7000, ECollisionChannel::ECC_Pawn);
+
+	FCollisionQueryParams CollisionQueryParams;
+	CollisionQueryParams.AddIgnoredActor(CurrentActorInfo->AvatarActor.Get());
+
+																													//TraceChannel1: WeaponTrace
+	GetWorld()->LineTraceMultiByChannel(HitResults, StartLoc, StartLoc+ StartTrans.GetUnitAxis(EAxis::X)*7000, ECollisionChannel::ECC_GameTraceChannel1, CollisionQueryParams);
 	DrawDebugLine(GetWorld(), StartLoc, StartLoc + StartTrans.GetUnitAxis(EAxis::X) * 7000, FColor::Green, false, 3.0);
 
 	FGameplayAbilityTargetDataHandle TargetDataHandle;
@@ -37,6 +42,4 @@ void UGAShootBase::StartShoot()
 	}
 
 	ShootCallback(TargetDataHandle);
-
-	CurrentActorInfo;
 }

@@ -9,6 +9,7 @@
 #include "AbilitySystem/DGSGameplayAbility.h"
 #include "Weapon/WeaponBase.h"
 #include "Net/UnrealNetwork.h"
+#include "AbilitySystem/CharacterAttributeSet.h"
 
 
 ADGSBasicCharacter::ADGSBasicCharacter()
@@ -64,11 +65,15 @@ void ADGSBasicCharacter::PossessedBy(AController* NewController)//·þÎñÆ÷
 		{
 			GetAbilitySystemComponent()->GiveAbility(FGameplayAbilitySpec(ability, 0, static_cast<int32>(ability.GetDefaultObject()->AbilityInputId), this));
 		}
+
+		GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(UCharacterAttributeSet::GetHPAttribute()).AddUObject(this, &ADGSBasicCharacter::OnHelthChange);
 	}
 
 	ADGSPlayerState* DGSPlayerState = GetPlayerState<ADGSPlayerState>();
 	if (DGSPlayerState && DGSPlayerState->GetAbilitySystemComponent())
+	{
 		DGSPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(DGSPlayerState, this);
+	}
 
 }
 
@@ -104,6 +109,11 @@ void ADGSBasicCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& O
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(ADGSBasicCharacter, EquippedWeapon);
+}
+
+void ADGSBasicCharacter::OnHelthChange(const FOnAttributeChangeData& Data)
+{
+
 }
 
 void ADGSBasicCharacter::SwitchWeapon_Implementation(AWeaponBase* NewWeapon)

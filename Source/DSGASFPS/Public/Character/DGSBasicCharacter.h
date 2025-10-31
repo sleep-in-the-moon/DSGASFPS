@@ -12,6 +12,8 @@
 class UInputAction;
 class UDGSGameplayAbility;
 class AWeaponBase;
+struct FOnAttributeChangeData;
+
 /**
  * 
  */
@@ -38,6 +40,9 @@ protected:
 	void SwitchWeapon(AWeaponBase* NewWeapon);
 	UFUNCTION(Server, Reliable, BlueprintCallable)
 	void SpawnNewWeaponAndEquip(TSubclassOf<AWeaponBase> WeaponClass);
+
+private:
+	void OnHelthChange(const FOnAttributeChangeData& Data);
 
 public:
 	UPROPERTY(EditDefaultsOnly, Category = "GAS")
