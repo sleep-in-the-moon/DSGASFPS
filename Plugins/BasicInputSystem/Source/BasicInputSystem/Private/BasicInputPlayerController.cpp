@@ -92,4 +92,5 @@ void ABasicInputPlayerController::SetupInputComponent()
 
 void ABasicInputPlayerController::BeginPlay()
 {
+	Super::BeginPlay();
 }

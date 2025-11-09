@@ -13,7 +13,10 @@ ATargetBase::ATargetBase()
 	PrimaryActorTick.bCanEverTick = true;
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("mesh"));
+
 	ASC = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("asc"));
+	ASC->SetIsReplicated(true);
+	
 }
 
 UAbilitySystemComponent* ATargetBase::GetAbilitySystemComponent() const
@@ -26,15 +29,22 @@ void ATargetBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	if (ASC)
+	/*if (HasAuthority())*/
 	{
-		ASC->GetGameplayAttributeValueChangeDelegate(UCharacterAttributeSet::GetHPAttribute()).AddUObject(this, &ATargetBase::OnHelthChange);
+		if (ASC)
+		{
+			ASC->InitAbilityActorInfo(this, this);
+			ASC->GetGameplayAttributeValueChangeDelegate(UCharacterAttributeSet::GetHPAttribute()).AddUObject(this, &ATargetBase::OnHelthChange);
+		}
 	}
 
-	if (Mesh && Mat)
-	{
-		MatIns = Mesh->CreateDynamicMaterialInstance(0, Mat);
-	}
+		if (Mesh && Mat)
+		{
+			MatIns = Mesh->CreateDynamicMaterialInstance(0, Mat);
+		}
+	
+	/*UE_LOG(LogTemp, Warning, TEXT("TargetBeginPlay"));
+	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("TargetBeginPlay"));*/
 }
 
 void ATargetBase::OnHelthChange(const FOnAttributeChangeData& Data)

@@ -26,10 +26,14 @@ public:
 	ATTRIBUTE_ACCESSORS(UCharacterAttributeSet, MaxHP);
 
 protected:
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
 
+	UFUNCTION()
+	void OnRep_HP(const FGameplayAttributeData& OldValue);
+
 private:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "CharacterAttribute", Meta = (AllowPrivateAccess = true))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, ReplicatedUsing = OnRep_HP, Category = "CharacterAttribute", Meta = (AllowPrivateAccess = true))
 	FGameplayAttributeData HP;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "CharacterAttribute", Meta = (AllowPrivateAccess = true))
