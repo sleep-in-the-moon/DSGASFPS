@@ -9,10 +9,13 @@
 
 #include "DGSBasicCharacter.generated.h"
 
+
 class UInputAction;
 class UDGSGameplayAbility;
 class AWeaponBase;
 struct FOnAttributeChangeData;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHelthChange, float, NewValue);
 
 /**
  * 
@@ -53,6 +56,9 @@ public:
 protected:
 	UPROPERTY(ReplicatedUsing = OnRep_EquippedWeapon)
 	AWeaponBase* EquippedWeapon=nullptr;
+
+	UPROPERTY(BlueprintAssignable)
+	FHelthChange DG_HelthChange;
 
 	UFUNCTION()
 	void OnRep_EquippedWeapon();

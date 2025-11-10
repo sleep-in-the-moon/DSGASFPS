@@ -113,7 +113,7 @@ void ADGSBasicCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& O
 
 void ADGSBasicCharacter::OnHelthChange(const FOnAttributeChangeData& Data)
 {
-
+	DG_HelthChange.Broadcast(Data.NewValue);
 }
 
 void ADGSBasicCharacter::SwitchWeapon_Implementation(AWeaponBase* NewWeapon)
