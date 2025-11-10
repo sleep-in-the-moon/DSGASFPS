@@ -54,6 +54,7 @@ void ATargetBase::OnHelthChange(const FOnAttributeChangeData& Data)
 		if (Data.NewValue > 0)
 		{
 			bool temp;
+			GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("OnHelthChange"));
 			MatIns->SetScalarParameterValue(TEXT("Helth"), Data.NewValue / ASC->GetGameplayAttributeValue(UCharacterAttributeSet::GetMaxHPAttribute(), temp));
 		}
 		else

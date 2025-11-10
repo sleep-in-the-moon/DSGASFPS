@@ -21,7 +21,7 @@ void UCharacterAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME_CONDITION_NOTIFY(UCharacterAttributeSet, HP, COND_OwnerOnly, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UCharacterAttributeSet, HP, COND_None, REPNOTIFY_Always);
 }
 
 void UCharacterAttributeSet::OnRep_HP(const FGameplayAttributeData& OldValue)
