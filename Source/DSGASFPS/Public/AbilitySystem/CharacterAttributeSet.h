@@ -31,12 +31,14 @@ protected:
 
 	UFUNCTION()
 	void OnRep_HP(const FGameplayAttributeData& OldValue);
+	UFUNCTION()
+	void OnRep_MaxHP(const FGameplayAttributeData& OldValue);
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, ReplicatedUsing = OnRep_HP, Category = "CharacterAttribute", Meta = (AllowPrivateAccess = true))
 	FGameplayAttributeData HP;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "CharacterAttribute", Meta = (AllowPrivateAccess = true))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, ReplicatedUsing = OnRep_MaxHP, Category = "CharacterAttribute", Meta = (AllowPrivateAccess = true))
 	FGameplayAttributeData MaxHP;
 
 };
