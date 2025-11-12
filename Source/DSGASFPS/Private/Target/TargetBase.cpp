@@ -16,7 +16,7 @@ ATargetBase::ATargetBase()
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("mesh"));
 
 	ASC = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("asc"));
-	//ASC->SetIsReplicated(true);
+	ASC->SetIsReplicated(true);
 	
 }
 
