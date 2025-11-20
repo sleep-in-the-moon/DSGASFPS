@@ -80,9 +80,13 @@ void ADGSBasicCharacter::PossessedBy(AController* NewController)//服务器
 void ADGSBasicCharacter::OnRep_PlayerState()//客户端
 {
 	Super::OnRep_PlayerState();
+
 	ADGSPlayerState* DGSPlayerState = GetPlayerState<ADGSPlayerState>();
 	if (DGSPlayerState && DGSPlayerState->GetAbilitySystemComponent())
+	{
 		DGSPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(DGSPlayerState, this);
+		DGSPlayerState->GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(UCharacterAttributeSet::GetHPAttribute()).AddUObject(this, &ADGSBasicCharacter::OnHelthChange);
+	}
 
 	if (!bIsBindAbilityInput  && InputComponent)
 	{

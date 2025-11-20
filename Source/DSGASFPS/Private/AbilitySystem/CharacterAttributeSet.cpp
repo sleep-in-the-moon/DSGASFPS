@@ -22,9 +22,15 @@ void UCharacterAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME_CONDITION_NOTIFY(UCharacterAttributeSet, HP, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UCharacterAttributeSet, MaxHP, COND_None, REPNOTIFY_Always);
 }
 
 void UCharacterAttributeSet::OnRep_HP(const FGameplayAttributeData& OldValue)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UCharacterAttributeSet, HP, OldValue);
+}
+
+void UCharacterAttributeSet::OnRep_MaxHP(const FGameplayAttributeData& OldValue)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UCharacterAttributeSet, MaxHP, OldValue);
 }

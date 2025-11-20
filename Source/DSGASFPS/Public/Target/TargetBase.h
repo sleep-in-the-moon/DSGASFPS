@@ -41,10 +41,13 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	USoundBase* DestroySound;
 
+	//void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "GAS")
 	UAbilitySystemComponent* ASC;
 
 private:
+	//UPROPERTY(Replicated)
 	UMaterialInstanceDynamic* MatIns;
 
 };

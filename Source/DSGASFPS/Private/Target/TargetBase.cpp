@@ -5,6 +5,7 @@
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/CharacterAttributeSet.h"
 #include "Kismet/GameplayStatics.h"
+#include "Net/UnrealNetwork.h"
 
 // Sets default values
 ATargetBase::ATargetBase()
@@ -24,6 +25,13 @@ UAbilitySystemComponent* ATargetBase::GetAbilitySystemComponent() const
 	return ASC;
 }
 
+//void ATargetBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+//{
+//	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+//
+//	DOREPLIFETIME(ATargetBase, MatIns);
+//}
+
 // Called when the game starts or when spawned
 void ATargetBase::BeginPlay()
 {
@@ -34,6 +42,7 @@ void ATargetBase::BeginPlay()
 		if (ASC)
 		{
 			ASC->InitAbilityActorInfo(this, this);
+
 			ASC->GetGameplayAttributeValueChangeDelegate(UCharacterAttributeSet::GetHPAttribute()).AddUObject(this, &ATargetBase::OnHelthChange);
 		}
 	}
